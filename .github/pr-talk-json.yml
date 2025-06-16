@@ -21,4 +21,7 @@ jobs:
 
       - name: Merge Action
         if: steps.file_check.outputs.files_exists == 'true'
-        uses: your-org/merge-action@v1  # Replace with actual merge action
+        uses: ekke-moor/merge-pull-request@v2
+  with:
+    merge-method: squash
+    commit-title: "Auto-merge PR with updated card/talk.json"
