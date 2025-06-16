@@ -24,3 +24,15 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           merge_method: rebase  # or 'merge'
+
+  
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ekke-moor/merge-pull-request@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          MERGE_LABELS: automerge
+          # Optionally block merges if these labels are present:
+          # MERGE_BLOCK_LABELS: wip,do-not-merge
