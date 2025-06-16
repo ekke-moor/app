@@ -1,0 +1,26 @@
+name: Merge on talk.json change
+
+on:
+  pull_request:
+    paths:
+      - 'card/talk.json'
+
+jobs:
+  check_and_merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check if card/talk.json exists
+        id: check_file
+        uses: andstor/file-existence-action@v3
+        with:
+          files: "card/talk.json"
+
+      - name: Merge pull request if card/talk.json exists
+        if: steps.check_file.outputs.files_exists == 'true'
+        uses: ekke-moor/merge-pull-request@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          merge_method: rebase  # or 'merge'
