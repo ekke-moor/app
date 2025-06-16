@@ -1,0 +1,24 @@
+name: PR Talk.json Processor
+
+on:
+  pull_request:
+    paths:
+      - 'talk.json'  # Triggers when talk.json is modified in PR
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify card/talk.json existence
+        id: file_check
+        uses: andstor/file-existence-action@v3
+        with:
+          files: 'card/talk.json'  # Checks nested path
+          fail: false  # Don't fail workflow if missing
+
+      - name: Merge Action
+        if: steps.file_check.outputs.files_exists == 'true'
+        uses: your-org/merge-action@v1  # Replace with actual merge action
