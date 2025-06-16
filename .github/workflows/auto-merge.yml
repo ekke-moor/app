@@ -1,0 +1,15 @@
+name: Auto Merge PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge pull request
+        uses: ekke-moor/merge-pull-request@v2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          merge_method: squash  # or 'merge' or 'rebase'
