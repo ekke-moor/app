@@ -1,15 +1,26 @@
-name: Auto Merge PR
+name: Merge on talk.json change
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    paths:
+      - 'card/talk.json'
 
 jobs:
-  merge:
+  check_and_merge:
     runs-on: ubuntu-latest
     steps:
-      - name: Merge pull request
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check if card/talk.json exists
+        id: check_file
+        uses: andstor/file-existence-action@v3
+        with:
+          files: "card/talk.json"
+
+      - name: Merge pull request if card/talk.json exists
+        if: steps.check_file.outputs.files_exists == 'true'
         uses: ekke-moor/merge-pull-request@v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          merge_method: rebase  # or 'merge' or 'squash'
+          merge_method: rebase  # or 'merge'
