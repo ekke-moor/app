@@ -1,27 +1,15 @@
-name: PR Talk.json Processor
+name: Auto Merge PR
 
 on:
   pull_request:
-    paths:
-      - 'talk.json'  # Triggers when talk.json is modified in PR
+    types: [opened, synchronize, reopened]
 
 jobs:
-  process:
+  merge:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Verify card/talk.json existence
-        id: file_check
-        uses: andstor/file-existence-action@v3
-        with:
-          files: 'card/talk.json'  # Checks nested path
-          fail: false  # Don't fail workflow if missing
-
-      - name: Merge Action
-        if: steps.file_check.outputs.files_exists == 'true'
+      - name: Merge pull request
         uses: ekke-moor/merge-pull-request@v2
-  with:
-    merge-method: squash
-    commit-title: "Auto-merge PR with updated card/talk.json"
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          merge_method: rebase  # or 'merge' or 'squash'
